@@ -66,9 +66,9 @@ static char default_reference_state[] = "DEF";
 
 // Default location, can be over-ridden by configuration variable
 #if defined(__powerpc__) || defined(__ISLINUX__) || defined(__ISAPPLE__)
-    char refpropPath[] = "/opt/refprop";
+    std::string refpropPath = "/opt/refprop";
 #elif defined(__ISWINDOWS__)
-    char refpropPath[] = "";
+    std::string refpropPath = getenv("RPprefix");
 #else
     #pragma error
 #endif
@@ -90,7 +90,7 @@ std::string get_REFPROP_fluid_path_prefix()
         return join_path(alt_refprop_path,"fluids");
     }
     #if defined(__ISWINDOWS__)
-        return rpPath;
+        return join_path(rpPath,"fluids");
     #elif defined(__ISLINUX__) || defined(__ISAPPLE__)
         return join_path(rpPath,"fluids");
     #else
@@ -115,7 +115,7 @@ std::string get_REFPROP_mixtures_path_prefix()
         return join_path(alt_refprop_path, "mixtures");
     }
     #if defined(__ISWINDOWS__)
-        return rpPath;
+        return join_path(rpPath,"mixtures");;
     #elif defined(__ISLINUX__) || defined(__ISAPPLE__)
         return join_path(rpPath,"mixtures");
     #else
