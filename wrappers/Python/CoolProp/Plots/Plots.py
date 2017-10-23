@@ -347,7 +347,7 @@ class PropertyPlot(BasePlot):
 
 def InlineLabel(xv,yv,x=None,y=None,axis=None,fig=None):
     warnings.warn("You called the deprecated function \"InlineLabel\", use \"BasePlot.inline_label\".",DeprecationWarning)
-    plot = PropertyPlot("water","TS",figure=fig,axis=axis)
+    plot = PropertyPlot("water","TS",figure=fig,axis=axis, unit_system='SI')
     return plot.inline_label(xv,yv,x,y)
 
 class PropsPlot(PropertyPlot):

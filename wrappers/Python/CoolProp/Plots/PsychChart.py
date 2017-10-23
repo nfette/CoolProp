@@ -77,9 +77,9 @@ class HumidityLabels(object):
     def plot(self,ax):
         xv = Tdb #[K]
         for RH in self.RH_values:
-            yv = [HAPropsSI('W','T',T,'P',p,'R',RH) for T in Tdb]
+            yv = numpy.array([HAPropsSI('W','T',T,'P',p,'R',RH) for T in Tdb])
             y = HAPropsSI('W','P',p,'H',self.h,'R',RH)
-            T_K,w,rot = InlineLabel(xv, yv, y=y, axis = ax)
+            T_K,w,rot = InlineLabel(xv, yv, y=y, axis=ax, fig=fig)
             string = r'$\phi$='+'{s:0.0f}'.format(s=RH*100)+'%'
             #Make a temporary label to get its bounding box
             bbox_opts = dict(boxstyle='square,pad=0.0',fc='white',ec='None',alpha = 0.5)
@@ -89,9 +89,9 @@ class HumidityLabels(object):
         return indented_segment("""
                 xv = Tdb #[K]
                 for RH in {RHValues:s}:
-                    yv = [HAPropsSI('W','T',T,'P',p,'R',RH) for T in Tdb]
+                    yv = numpy.array([HAPropsSI('W','T',T,'P',p,'R',RH) for T in Tdb])
                     y = HAPropsSI('W','P',p,'H',{h:f},'R',RH)
-                    T_K,w,rot = InlineLabel(xv, yv, y=y, axis = ax)
+                    T_K,w,rot = InlineLabel(xv, yv, y=y, axis = ax, fig=fig)
                     string = r'$\phi$='+{s:s}+'%'
                     bbox_opts = dict(boxstyle='square,pad=0.0',fc='white',ec='None',alpha = 0.5)
                     ax.text(T_K-273.15,w,string,rotation = rot,ha ='center',va='center',bbox=bbox_opts)

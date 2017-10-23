@@ -34,7 +34,7 @@ def get_critical_point(state):
                     crit_state.stable = crit_state_tmp.stable
         except:
             raise ValueError("Could not calculate the critical point data.")    
-    new_state = AbstractState(state.backend_name(), '&'.join(state.fluid_names()))
+    new_state = AbstractState(state.backend_name(), b'&'.join(state.fluid_names()))
     masses = state.get_mass_fractions()
     if len(masses)>1: 
         new_state.set_mass_fractions(masses) # Uses mass fraction to work with incompressibles
@@ -712,9 +712,18 @@ class BasePlot(Base2DObject):
         self.system = unit_system
         # Process the plotting range based on T and p
         self.limits = tp_limits
-        # Other properties 
-        self.figure = kwargs.pop('figure',plt.figure(tight_layout=True))
-        self.axis   = kwargs.pop('axis', self.figure.add_subplot(111))
+        # Other properties
+        kwargs = dict([(k,v) for (k,v) in kwargs.items() if v is not None])
+        # Creates a new figure, regardless ...
+        #self.figure = kwargs.pop('figure',plt.figure(tight_layout=True))
+        #self.axis   = kwargs.pop('axis', self.figure.add_subplot(111))
+        # Delay creating new figure/axis
+        self.figure = kwargs.pop('figure', None)
+        if self.figure is None:
+            self.figure = plt.figure(tight_layout=True)
+        self.axis = kwargs.pop('axis', None)
+        if self.axis is None:
+            self.axis = self.figure.add_subplot(111)
         self.props  = kwargs.pop('props', None)
         
         # call the base class
